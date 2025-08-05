@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Conceito do Método Gaus-Siedel</title>
     <link rel="stylesheet" type="text/css" href="assets/css/header.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
 
 </head>
 <body>
+    <!-- Header que deve ter em todas as páginas -->
     <header>
     <nav class="nav-bar">
       <div class="logo">
@@ -26,6 +28,13 @@
       </div>
     </nav>
   </header>
+
+  <!-- A parte que irá exebir os conceito teŕociso -->
+  <main>
+    <button onclick="conceito_teorico('content')" id="content_text">Exibir Conceito Teórico</button>
+    <div id="content" style="display: none;">Escrever Sobre o </div>
+  </main>
+
   <div class="container">
     <h1>Método de Gauss-Seidel</h1>
 
@@ -50,6 +59,6 @@
     <pre id="output"></pre>
   </div>
 
-  <script src="assets/js/metodo_gauss_sidel.js"></script>
+    <script src="assets/js/metodo_gauss_sidel.js"></script>
 </body>
 </html>
