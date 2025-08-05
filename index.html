@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gauss-Seidel Solver</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-family: monospace;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #007BFF;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Método de Gauss-Seidel</h1>
+
+    <label for="matrix">Matriz dos coeficientes (ex: 3x3):</label>
+    <textarea id="matrix" rows="5" placeholder="Exemplo:
+4 1 2
+3 5 1
+1 1 3"></textarea>
+
+    <label for="vector">Vetor de termos independentes:</label>
+    <input type="text" id="vector" placeholder="Ex: 4 7 3" />
+
+    <label for="tolerance">Tolerância (erro):</label>
+    <input type="number" id="tolerance" value="0.0001" step="0.0001" />
+
+    <label for="iterations">Máx. de iterações:</label>
+    <input type="number" id="iterations" value="100" />
+
+    <button onclick="solveGaussSeidel()">Resolver</button>
+
+    <h3>Resultado:</h3>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function parseMatrix(text) {
+      return text.trim().split('\n').map(row => row.trim().split(/\s+/).map(Number));
+    }
+
+    function gaussSeidel(A, b, tol, maxIter) {
+      const n = A.length;
+      let x = Array(n).fill(0);
+      let xOld = Array(n).fill(0);
+      let output = '';
+
+      for (let k = 0; k < maxIter; k++) {
+        output += `Iteração ${k+1}:\n`;
+        for (let i = 0; i < n; i++) {
+          let sum = 0;
+          for (let j = 0; j < n; j++) {
+            if (j !== i) {
+              sum += A[i][j] * x[j];
+            }
+          }
+          x[i] = (b[i] - sum) / A[i][i];
+        }
+
+        output += 'x = [' + x.map(v => v.toFixed(6)).join(', ') + ']\n\n';
+
+        // Verificar convergência
+        let error = Math.max(...x.map((v, i) => Math.abs(v - xOld[i])));
+        if (error < tol) {
+          output += `Convergência atingida com erro ${error.toExponential()}\n`;
+          return output;
+        }
+        xOld = [...x];
+      }
+
+      output += 'Número máximo de iterações atingido.\n';
+      return output;
+    }
+
+    function solveGaussSeidel() {
+      const matrixText = document.getElementById('matrix').value;
+      const vectorText = document.getElementById('vector').value;
+      const tol = parseFloat(document.getElementById('tolerance').value);
+      const maxIter = parseInt(document.getElementById('iterations').value);
+
+      try {
+        const A = parseMatrix(matrixText);
+        const b = vectorText.trim().split(/\s+/).map(Number);
+
+        if (A.length !== b.length) {
+          throw new Error('A matriz e o vetor devem ter o mesmo tamanho!');
+        }
+
+        const result = gaussSeidel(A, b, tol, maxIter);
+        document.getElementById('output').textContent = result;
+
+      } catch (error) {
+        document.getElementById('output').textContent = 'Erro: ' + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
+
