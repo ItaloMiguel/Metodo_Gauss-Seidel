@@ -72,29 +72,71 @@ function solveGaussSeidel() {
 //   }
 // }
 
-function conceito_teorico(id) {
+// function conceito_teorico(id) {
+//   const elementText = document.getElementById('content_text');
+//   const elementContent = document.getElementById(id);
+//   const CurrentDisplay = window.getComputedStyle(elementContent).display;
+
+//   if (window.MathJax) {
+//     if (CurrentDisplay == "none") {
+//       // Buscar o arquivo de texto
+//       fetch('assets/latex/intex.txt')
+//         .then(response => {
+//           if (!response.ok) throw new Error("Erro ao carregar arquivo");
+//           return response.text();
+//         })
+//         .then(texto => {
+//           elementContent.textContent = texto; // coloca o conteúdo do .txt
+//           elementContent.style.display = "block";
+//           elementText.innerHTML = "Esconder Conceito Teórico";
+//         })
+//         .catch(err => {
+//           elementContent.textContent = "Não foi possível carregar o conceito.";
+//           elementContent.style.display = "block";
+//         });
+//     } else {
+//       elementText.innerHTML = "Exibir Conceito Teórico";
+//       elementContent.style.display = "none";
+//     }
+//   } else {
+//     console.log("MathJax ainda não foi carregado.")
+//   }
+
+
+
+// }
+
+function conceito_teorico(id, caminhoArquivo) {
   const elementText = document.getElementById('content_text');
   const elementContent = document.getElementById(id);
   const CurrentDisplay = window.getComputedStyle(elementContent).display;
 
-  if (CurrentDisplay == "none") {
-    // Buscar o arquivo de texto
-    fetch('assets/latex/intex.txt')
+  if (CurrentDisplay === "none") {
+    // Mostrar o conteúdo, carregar do arquivo e renderizar
+    fetch('conceito.tex')
       .then(response => {
         if (!response.ok) throw new Error("Erro ao carregar arquivo");
         return response.text();
       })
       .then(texto => {
-        elementContent.textContent = texto; // coloca o conteúdo do .txt
+        elementContent.innerHTML = texto; // importante: usar innerHTML para MathJax
         elementContent.style.display = "block";
         elementText.innerHTML = "Esconder Conceito Teórico";
+
+        if (window.MathJax) {
+          MathJax.typesetPromise(); // renderiza o LaTeX
+        } else {
+          console.warn("MathJax não está carregado");
+        }
       })
       .catch(err => {
         elementContent.textContent = "Não foi possível carregar o conceito.";
         elementContent.style.display = "block";
+        elementText.innerHTML = "Esconder Conceito Teórico";
       });
   } else {
-    elementText.innerHTML = "Exibir Conceito Teórico";
+    // Esconder o conteúdo
     elementContent.style.display = "none";
+    elementText.innerHTML = "Exibir Conceito Teórico";
   }
 }
