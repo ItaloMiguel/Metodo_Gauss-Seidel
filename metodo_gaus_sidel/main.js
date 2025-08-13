@@ -29,6 +29,8 @@ function gaussSeidel(A, b, tol, maxIter) {
       return output;
     }
     xOld = [...x];
+    output += `Iteração ${k + 1}:\n`;
+    output += 'x = [' + x.map(v => v.toFixed(6)).join(', ') + ']\n\n';
   }
 
   output += 'Número máximo de iterações atingido.\n';
@@ -56,55 +58,6 @@ function solveGaussSeidel() {
     document.getElementById('output').textContent = 'Erro: ' + error.message;
   }
 }
-
-
-// function conceito_teorico(id) {
-//   const elementText = document.getElementById('content_text');
-//   const elementContent = document.getElementById(id);
-//   const CurrentDisplay = window.getComputedStyle(elementContent).display;
-
-//   if (CurrentDisplay == "none") {
-//     elementText.innerHTML = "Esconder Conceito Teorico"
-//     elementContent.style.display = "block"
-//   } else {
-//     elementText.innerHTML = "Exibir Conceito Teorico"
-//     elementContent.style.display = "none"
-//   }
-// }
-
-// function conceito_teorico(id) {
-//   const elementText = document.getElementById('content_text');
-//   const elementContent = document.getElementById(id);
-//   const CurrentDisplay = window.getComputedStyle(elementContent).display;
-
-//   if (window.MathJax) {
-//     if (CurrentDisplay == "none") {
-//       // Buscar o arquivo de texto
-//       fetch('assets/latex/intex.txt')
-//         .then(response => {
-//           if (!response.ok) throw new Error("Erro ao carregar arquivo");
-//           return response.text();
-//         })
-//         .then(texto => {
-//           elementContent.textContent = texto; // coloca o conteúdo do .txt
-//           elementContent.style.display = "block";
-//           elementText.innerHTML = "Esconder Conceito Teórico";
-//         })
-//         .catch(err => {
-//           elementContent.textContent = "Não foi possível carregar o conceito.";
-//           elementContent.style.display = "block";
-//         });
-//     } else {
-//       elementText.innerHTML = "Exibir Conceito Teórico";
-//       elementContent.style.display = "none";
-//     }
-//   } else {
-//     console.log("MathJax ainda não foi carregado.")
-//   }
-
-
-
-// }
 
 function conceito_teorico(id, caminhoArquivo) {
   const elementText = document.getElementById('content_text');
