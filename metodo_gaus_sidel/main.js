@@ -1,3 +1,10 @@
+const btn = document.querySelector(".theme-toggle");
+btn.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  btn.textContent = document.body.classList.contains("dark") ? "🌙 Modo Escuro" : "☀️ Modo Claro";
+});
+
+
 function parseMatrix(text) {
   return text.trim().split('\n').map(row => row.trim().split(/\s+/).map(Number));
 }
@@ -29,8 +36,6 @@ function gaussSeidel(A, b, tol, maxIter) {
       return output;
     }
     xOld = [...x];
-    output += `Iteração ${k + 1}:\n`;
-    output += 'x = [' + x.map(v => v.toFixed(6)).join(', ') + ']\n\n';
   }
 
   output += 'Número máximo de iterações atingido.\n';
@@ -59,37 +64,19 @@ function solveGaussSeidel() {
   }
 }
 
-function conceito_teorico(id, caminhoArquivo) {
+function conceito_teorico(id) {
   const elementText = document.getElementById('content_text');
   const elementContent = document.getElementById(id);
   const CurrentDisplay = window.getComputedStyle(elementContent).display;
 
-  if (CurrentDisplay === "none") {
-    // Mostrar o conteúdo, carregar do arquivo e renderizar
-    fetch('conceito.tex')
-      .then(response => {
-        if (!response.ok) throw new Error("Erro ao carregar arquivo");
-        return response.text();
-      })
-      .then(texto => {
-        elementContent.innerHTML = texto; // importante: usar innerHTML para MathJax
-        elementContent.style.display = "block";
-        elementText.innerHTML = "Esconder Conceito Teórico";
+  if (CurrentDisplay == "none") {
+    elementText.innerHTML = "Esconder Conceito Teorico"
+    elementContent.style.display = "block"
 
-        if (window.MathJax) {
-          MathJax.typesetPromise(); // renderiza o LaTeX
-        } else {
-          console.warn("MathJax não está carregado");
-        }
-      })
-      .catch(err => {
-        elementContent.textContent = "Não foi possível carregar o conceito.";
-        elementContent.style.display = "block";
-        elementText.innerHTML = "Esconder Conceito Teórico";
-      });
   } else {
-    // Esconder o conteúdo
-    elementContent.style.display = "none";
-    elementText.innerHTML = "Exibir Conceito Teórico";
+    elementText.innerHTML = "Exibir Conceito Teorico"
+    elementContent.style.display = "none"
   }
+
+
 }

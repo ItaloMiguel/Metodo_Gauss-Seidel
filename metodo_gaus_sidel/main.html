@@ -7,8 +7,7 @@
   <title>Conceito do Método Gaus-Siedel</title>
 
   <!-- Carregar os CSS -->
-  <link rel="stylesheet" type="text/css" href="../assets/css/header.css">
-  <link rel="stylesheet" type="text/css" href="../assets/css/main.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
   <!-- Carregar Polyfill e MathJax -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -20,21 +19,27 @@
   <!-- Header que deve ter em todas as páginas -->
   <header>
     <nav class="nav-bar">
+      <!-- Logo -->
       <div class="logo">
-        <h1>Cálculo Númerico</h1>
+        <h1>Cálculo Numérico</h1>
       </div>
 
+      <!-- Links de Navegação -->
       <div class="nav-list">
         <ul>
-          <li class="nav-item"><a href="conceito_metodo_gaus_siedel.html" class="nav-link">Método de Gauss-Seidel</a>
+          <li class="nav-item">
+            <a href="main.html" class="nav-link">Método de Gauss-Seidel</a>
           </li>
-          <li class="nav-item"><a href="conceito_metodo_gaus_siedel.html" class="nav-link">Método de Newton-Raphson</a>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Método de Newton-Raphson</a>
           </li>
         </ul>
       </div>
 
-      <div class="login-button">
-        <button><a href="index.html">Pagina Inicial</a></button>
+      <!-- Botões -->
+      <div class="nav-actions">
+        <a href="../index.html" class="home-btn">Página Inicial</a>
+        <button class="theme-toggle">☀️ Modo Claro</button>
       </div>
     </nav>
   </header>
@@ -42,7 +47,93 @@
   <!-- A parte que irá exebir os conceito teŕociso -->
   <main>
     <button onclick="conceito_teorico('content')" id="content_text"> Exibir Conceito Teórico </button>
-    <div id="content" style="display: none;">Escrever Sobre o </div>
+    <div id="content" style="display: none;">
+      <p>
+        O método de <b>Gauss-Seidel</b> é um processo iterativo utilizado para resolver sistemas lineares da forma:
+      </p>
+
+      <p>
+        \[ A \mathbf{x} = \mathbf{b} \]
+      </p>
+
+      <h2>Ideia do Método</h2>
+      <p>
+        Dado o sistema linear:
+      </p>
+
+      <p>
+        \[
+        a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1
+        \]
+        \[
+        a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2
+        \]
+        \[
+        \vdots
+        \]
+        \[
+        a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nn}x_n = b_n
+        \]
+      </p>
+
+      <p>
+        Isolamos cada incógnita:
+      </p>
+
+      <p>
+        \[
+        x_i = \frac{1}{a_{ii}} \left( b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k)}
+        \right).
+        \]
+      </p>
+
+      <h2>Exemplo Numérico</h2>
+      <p>
+        Considere o sistema:
+      </p>
+
+      <p>
+        \[
+        4x_1 + x_2 = 7
+        \]
+        \[
+        x_1 + 3x_2 = 5
+        \]
+      </p>
+
+      <p>
+        A partir de um chute inicial \(\mathbf{x}^{(0)} = (0,0)\), obtemos:
+      </p>
+
+      <ul>
+        <li>Iteração 1:
+          \[
+          x_1^{(1)} = \frac{1}{4}(7 - 0) = 1.75, \quad
+          x_2^{(1)} = \frac{1}{3}(5 - 1.75) = 1.0833
+          \]
+        </li>
+        <li>Iteração 2:
+          \[
+          x_1^{(2)} = \frac{1}{4}(7 - 1.0833) = 1.4792, \quad
+          x_2^{(2)} = \frac{1}{3}(5 - 1.4792) = 1.1736
+          \]
+        </li>
+        <li>Iteração 3:
+          \[
+          x_1^{(3)} = \frac{1}{4}(7 - 1.1736) = 1.4566, \quad
+          x_2^{(3)} = \frac{1}{3}(5 - 1.4566) = 1.1811
+          \]
+        </li>
+      </ul>
+
+      <p>
+        O processo converge para aproximadamente:
+        \[
+        x_1 \approx 1.455, \quad x_2 \approx 1.182
+        \]
+      </p>
+
+    </div>
   </main>
 
   <div class="container">
@@ -69,107 +160,7 @@
     <pre id="output"></pre>
   </div>
 
-  <script>
-
-    function parseMatrix(text) {
-      return text.trim().split('\n').map(row => row.trim().split(/\s+/).map(Number));
-    }
-
-    function gaussSeidel(A, b, tol, maxIter) {
-      const n = A.length;
-      let x = Array(n).fill(0);
-      let xOld = Array(n).fill(0);
-      let output = '';
-
-      for (let k = 0; k < maxIter; k++) {
-        output += `Iteração ${k + 1}:\n`;
-        for (let i = 0; i < n; i++) {
-          let sum = 0;
-          for (let j = 0; j < n; j++) {
-            if (j !== i) {
-              sum += A[i][j] * x[j];
-            }
-          }
-          x[i] = (b[i] - sum) / A[i][i];
-        }
-
-        output += 'x = [' + x.map(v => v.toFixed(6)).join(', ') + ']\n\n';
-
-        // Verificar convergência
-        let error = Math.max(...x.map((v, i) => Math.abs(v - xOld[i])));
-        if (error < tol) {
-          output += `Convergência atingida com erro ${error.toExponential()}\n`;
-          return output;
-        }
-        xOld = [...x];
-      }
-
-      output += 'Número máximo de iterações atingido.\n';
-      return output;
-    }
-
-    function solveGaussSeidel() {
-      const matrixText = document.getElementById('matrix').value;
-      const vectorText = document.getElementById('vector').value;
-      const tol = parseFloat(document.getElementById('tolerance').value);
-      const maxIter = parseInt(document.getElementById('iterations').value);
-
-      try {
-        const A = parseMatrix(matrixText);
-        const b = vectorText.trim().split(/\s+/).map(Number);
-
-        if (A.length !== b.length) {
-          throw new Error('A matriz e o vetor devem ter o mesmo tamanho!');
-        }
-
-        const result = gaussSeidel(A, b, tol, maxIter);
-        document.getElementById('output').textContent = result;
-
-      } catch (error) {
-        document.getElementById('output').textContent = 'Erro: ' + error.message;
-      }
-    }
-
-    function conceito_teorico(id) {
-      const elementText = document.getElementById('content_text');
-      const elementContent = document.getElementById(id);
-      const CurrentDisplay = window.getComputedStyle(elementContent).display;
-
-      if (CurrentDisplay === "none") {
-        fetch('main.tex')
-          .then(response => {
-            if (!response.ok) throw new Error("Erro ao carregar arquivo");
-            return response.text();
-          })
-          .then(texto => {
-            // Detecta se tem LaTeX
-            const contemLatex = texto.includes('\\(') || texto.includes('\\[');
-
-            if (contemLatex) {
-              elementContent.innerHTML = texto; // usa innerHTML para MathJax
-              if (window.MathJax) {
-                MathJax.typesetPromise();
-              } else {
-                console.warn("MathJax não está carregado");
-              }
-            } else {
-              elementContent.textContent = texto; // texto puro, seguro
-            }
-
-            elementContent.style.display = "block";
-            elementText.innerHTML = "Esconder Conceito Teórico";
-          })
-          .catch(err => {
-            elementContent.textContent = "Não foi possível carregar o conceito.";
-            elementContent.style.display = "block";
-            elementText.innerHTML = "Esconder Conceito Teórico";
-          });
-      } else {
-        elementContent.style.display = "none";
-        elementText.innerHTML = "Exibir Conceito Teórico";
-      }
-    }
-  </script>
+  <script src="main.js"></script>
 </body>
 
 </html>

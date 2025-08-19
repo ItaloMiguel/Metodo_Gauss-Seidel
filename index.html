@@ -1,42 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cálculo Númerico</title>
-  <link rel="stylesheet" type="text/css" href="assets/css/header.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conceito do Método Gaus-Siedel</title>
+
+  <!-- Carregar os CSS -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
 </head>
+
 <body>
+  <!-- Header que deve ter em todas as páginas -->
   <header>
     <nav class="nav-bar">
+      <!-- Logo -->
       <div class="logo">
-        <h1>Cálculo Númerico</h1>
+        <h1>Cálculo Numérico</h1>
       </div>
-      
+
+      <!-- Links de Navegação -->
       <div class="nav-list">
         <ul>
-          <li class="nav-item"><a href="metodo_gaus_sidel/main.html" class="nav-link">Método de Gauss-Seidel</a></li>
-          <li class="nav-item"><a href="conceito_metodo_gaus_siedel.html" class="nav-link">Método de Newton-Raphson</a></li>
-          <li class="nav-item"><a href="formula.html" class="nav-link">Fórmulas</a></li>
+          <li class="nav-item">
+            <a href="metodo_gaus_sidel/main.html" class="nav-link">Método de Gauss-Seidel</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Método de Newton-Raphson</a>
+          </li>
         </ul>
       </div>
 
-      <div class="login-button">
-        <button><a href="index.html">Pagina Inicial</a></button>
+      <!-- Botões -->
+      <div class="nav-actions">
+        <a href="index.html" class="home-btn">Página Inicial</a>
+        <button class="theme-toggle">☀️ Modo Claro</button>
       </div>
     </nav>
   </header>
 
   <main>
+    
 
-    <h1>Objetivo do site</h1>
-    A ideia do site é apenas colocar as coisas que faço em cálculo númerico em "produção", nada de mais
-  
   </main>
 
+  <script>
+      const btn = document.querySelector(".theme-toggle");
+      btn.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        btn.textContent = document.body.classList.contains("dark") ? "🌙 Modo Escuro" : "☀️ Modo Claro";
+      });
 
-
-  
+  </script>
 </body>
 </html>
-
