@@ -49,43 +49,117 @@
     <button onclick="conceito_teorico('content')" id="content_text"> Exibir Conceito Teórico </button>
     <div id="content" style="display: none;">
       <p>
-        O método de <b>Gauss-Seidel</b> é um processo iterativo utilizado para resolver sistemas lineares da forma:
+        O método de <b>Gauss-Seidel</b> é uma variação do método de Jacobi para a solução de sistemas lineares da forma
       </p>
 
       <p>
-        \[ A \mathbf{x} = \mathbf{b} \]
-      </p>
-
-      <h2>Ideia do Método</h2>
-      <p>
-        Dado o sistema linear:
-      </p>
-
-      <p>
-        \[
-        a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n = b_1
-        \]
-        \[
-        a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n = b_2
-        \]
-        \[
-        \vdots
-        \]
-        \[
-        a_{n1}x_1 + a_{n2}x_2 + \dots + a_{nn}x_n = b_n
+        \[ 
+          A \mathbf{x} = \mathbf{b}, 
         \]
       </p>
 
       <p>
-        Isolamos cada incógnita:
+        em que a matriz \( A \) é quadrada e não possui elementos nulos em sua diagonal. 
+        A principal diferença em relação ao método de Jacobi está no processo de iteração: 
+        a cada novo valor calculado \( x_i^{(k+1)} \), este já é imediatamente utilizado no 
+        cálculo dos demais valores da mesma iteração.
       </p>
+
+      <p>Considere o sistema linear de \( n \) equações: </p>
 
       <p>
         \[
-        x_i = \frac{1}{a_{ii}} \left( b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k+1)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k)}
-        \right).
+          A =
+          \begin{bmatrix}
+          a_{11} & a_{12} & \cdots & a_{1n} \\
+          a_{21} & a_{22} & \cdots & a_{2n} \\
+          \vdots & \vdots & \ddots & \vdots \\
+          a_{n1} & a_{n2} & \cdots & a_{nn}
+          \end{bmatrix},
+          \quad
+          \mathbf{x} =
+          \begin{bmatrix}
+          x_{1} \\
+          x_{2} \\
+          \vdots \\
+          x_{n}
+          \end{bmatrix},
+          \quad
+          \mathbf{b} =
+          \begin{bmatrix}
+          b_{1} \\
+          b_{2} \\
+          \vdots \\
+          b_{n}
+          \end{bmatrix}.
         \]
       </p>
+
+      <p>Decompomos a matriz \( A \) em três partes: a diagonal \( D \), a parte triangular inferior \( L \) e a parte triangular superior \( U \), de modo que</p>
+
+      <p>
+        \[ 
+          A = D + L + U. 
+        \]
+      </p>
+
+      <p>Assim, o sistema linear pode ser reescrito como: </p>
+
+      <!-- EQUAÇÃO DE LINHA -->
+      <p>
+        \[ 
+          (D + L + U)\mathbf{x} = \mathbf{b}. \label{eq:Eqeq}
+        \]
+      </p>
+
+      <p>Isolando \( \mathbf{x} \) em na equação, obtemos a forma iterativa:</p>
+       
+      <!-- EQUAÇÃO DE LINHA -->
+      <p>
+        \[ 
+          \mathbf{x}^{(k+1)} = (D + L)^{-1}\big(\mathbf{b} - U \mathbf{x}^{(k)}\big). 
+        \]
+      </p>
+
+      <p>De forma equivalente, elemento a elemento:</p>
+
+      <p>
+        \[ x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j=1}^{i-1} a_{ij} x_j^{(k+1)} - \sum_{j=i+1}^n a_{ij} x_j^{(k)} \right),
+        \quad i = 1, 2, \ldots, n. \]
+      </p>
+      
+      <p> Ou seja, para calcular $x_i^{(k+1)}$, utilizamos imediatamente os novos valores já computados 
+          \( x_1^{(k+1)}, x_2^{(k+1)}, \ldots, x_{i-1}^{(k+1)} \), em conjunto com os valores antigos \( x_{i+1}^{(k)}, \ldots, x_{n}^{(k)} \).
+      </p>
+
+      <p>
+        A convergência do método de Gauss-Seidel não é garantida para qualquer matriz \( A \). Em geral, a convergência é assegurada se a matriz 
+        \( A \) for <b>estritamente diagonalmente dominante</b> ou <b>simétrica definida positiva </b>. 
+        Nessas condições, a sequência de aproximações \( \mathbf{x}^{(k)} \) tende para a solução exata \( mathbf{x} \) do sistema linear.
+      </p>
+      
+      <p>Como o método é iterativo, define-se um critério de parada baseado em um <b>erro</b>. Uma forma comum é utilizar o erro absoluto entre iterações consecutivas:</p>
+
+      <p>
+        \[
+          \| \mathbf{x}^{(k+1)} - \mathbf{x}^{(k)} \| < \varepsilon,
+        \]
+      </p>
+
+      <p> onde \( \varepsilon \) é a tolerância previamente estabelecida. Outra possibilidade é calcular o erro relativo, dado por </p>
+
+      <p>
+        \[
+          \frac{\| \mathbf{x}^{(k+1)} - \mathbf{x}^{(k)} \|}{\| \mathbf{x}^{(k+1)} \|} < \varepsilon,
+        \]
+      </p>
+
+      <p>o que garante que a precisão desejada não dependa da escala dos valores de \( \mathbf{x} \).</p>
+
+      <p>Na prática, o processo iterativo é interrompido quando o erro calculado for menor que a tolerância definida, 
+        assegurando que a solução aproximada \( \mathbf{x}^{(k+1)} \) esteja suficientemente próxima da solução exata.
+      </p>
+      <!--  EXEMPLO DE APLICAÇÃO -->
 
       <h2>Exemplo Numérico</h2>
       <p>
