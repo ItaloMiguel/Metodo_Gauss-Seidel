@@ -1,0 +1,88 @@
+O método de Gauss-Seidel é uma variação do método de Jacobi para a solução de sistemas lineares da forma
+
+        \[
+        A \mathbf{x} = \mathbf{b},
+        \]
+        
+        \noindent em que a matriz $A$ é quadrada e não possui elementos nulos em sua diagonal. A principal diferença em relação ao método de Jacobi está no processo de iteração: a cada novo valor calculado $x_i^{(k+1)}$, este já é imediatamente utilizado no cálculo dos demais valores da mesma iteração.
+        
+        \medskip
+        
+        Considere o sistema linear de $n$ equações:
+        
+        \[
+        A =
+        \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{bmatrix},
+        \quad
+        \mathbf{x} =
+        \begin{bmatrix}
+        x_{1} \\
+        x_{2} \\
+        \vdots \\
+        x_{n}
+        \end{bmatrix},
+        \quad
+        \mathbf{b} =
+        \begin{bmatrix}
+        b_{1} \\
+        b_{2} \\
+        \vdots \\
+        b_{n}
+        \end{bmatrix}.
+        \]
+        
+        Decompomos a matriz $A$ em três partes: a diagonal $D$, a parte triangular inferior $L$ e a parte triangular superior $U$, de modo que
+        
+        \[
+        A = D + L + U.
+        \]
+        
+        Assim, o sistema linear pode ser reescrito como:
+        
+        \begin{equation}
+        (D + L + U)\mathbf{x} = \mathbf{b}.
+        \label{eq:Sistema_GS}
+        \end{equation}
+        
+        Isolando $\mathbf{x}$ em \eqref{eq:Sistema_GS}, obtemos a forma iterativa:
+        
+        \begin{equation}
+        \mathbf{x}^{(k+1)} = (D + L)^{-1}\big(\mathbf{b} - U \mathbf{x}^{(k)}\big).
+        \label{eq:Metodo_GS_Matricial}
+        \end{equation}
+        
+        De forma equivalente, elemento a elemento:
+        
+        \begin{equation}
+        x_i^{(k+1)} = \frac{1}{a_{ii}}
+        \left( b_i - \sum_{j=1}^{i-1} a_{ij} x_j^{(k+1)} - \sum_{j=i+1}^n a_{ij} x_j^{(k)} \right),
+        \quad i = 1, 2, \ldots, n.
+        \label{eq:Metodo_GS_Algebrico}
+        \end{equation}
+        
+        \noindent Ou seja, para calcular $x_i^{(k+1)}$, utilizamos imediatamente os novos valores já computados $x_1^{(k+1)}, x_2^{(k+1)}, \ldots, x_{i-1}^{(k+1)}$, em conjunto com os valores antigos $x_{i+1}^{(k)}, \ldots, x_{n}^{(k)}$.
+        
+        \medskip
+        
+        A convergência do método de Gauss-Seidel não é garantida para qualquer matriz $A$. Em geral, a convergência é assegurada se a matriz $A$ for estritamente diagonalmente dominante ou simétrica definida positiva. Nessas condições, a sequência de aproximações $\{\mathbf{x}^{(k)}\}$ tende para a solução exata $\mathbf{x}$ do sistema linear.
+        
+        Como o método é iterativo, define-se um critério de parada baseado em um erro. Uma forma comum é utilizar o erro absoluto entre iterações consecutivas:
+        
+        \[
+        \| \mathbf{x}^{(k+1)} - \mathbf{x}^{(k)} \| < \varepsilon,
+        \]
+        
+        onde $\varepsilon$ é a tolerância previamente estabelecida. Outra possibilidade é calcular o erro relativo, dado por
+        
+        \[
+        \frac{\| \mathbf{x}^{(k+1)} - \mathbf{x}^{(k)} \|}{\| \mathbf{x}^{(k+1)} \|} < \varepsilon,
+        \]
+        
+        o que garante que a precisão desejada não dependa da escala dos valores de $\mathbf{x}$.
+        
+        Na prática, o processo iterativo é interrompido quando o erro calculado for menor que a tolerância definida, assegurando que a solução aproximada $\mathbf{x}^{(k+1)}$ esteja suficientemente próxima da solução exata.
