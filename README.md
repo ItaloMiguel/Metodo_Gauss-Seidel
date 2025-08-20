@@ -1,2 +1,2 @@
 # Calculo Numérico
-Link para o site: https://italomiguel.github.io/Metodo_Gauss-Seidel/
+Link para o site: https://italomiguel.github.io/Calculo_Numerico/index.html
